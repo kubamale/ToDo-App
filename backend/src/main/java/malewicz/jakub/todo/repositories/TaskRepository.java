@@ -11,4 +11,6 @@ import java.util.UUID;
 public interface TaskRepository extends JpaRepository<TaskEntity, UUID> {
     @Query("SELECT DISTINCT t.date from tasks t where t.date >= :startDate AND t.date <= :endDate")
     List<LocalDate> findTaskDatesBetween(LocalDate startDate, LocalDate endDate);
+
+    List<TaskEntity> findByDate(LocalDate date);
 }

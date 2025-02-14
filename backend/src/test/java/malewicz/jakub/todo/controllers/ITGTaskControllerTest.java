@@ -72,4 +72,15 @@ class ITGTaskControllerTest {
         assertThat(response).isNotNull();
         assertThat(Integer.valueOf(response.length)).isEqualTo(1);
     }
+
+    @Test
+    void testGetTasksByDateShouldReturnAllTasksInGivenDate() {
+        var response = restTemplate.getForObject(
+                "/api/v1/tasks?date={date}",
+                TaskDetailsDto[].class,
+                LocalDate.now()
+        );
+        assertThat(response).isNotNull();
+        assertThat(Integer.valueOf(response.length)).isEqualTo(2);
+    }
 }

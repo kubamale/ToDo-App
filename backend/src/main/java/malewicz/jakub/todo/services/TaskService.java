@@ -24,4 +24,8 @@ public class TaskService {
     public List<LocalDate> getTaskDates(LocalDate startDate, LocalDate endDate) {
         return taskRepository.findTaskDatesBetween(startDate, endDate);
     }
+
+    public List<TaskDetailsDto> getTasksByDate(LocalDate date) {
+        return taskRepository.findByDate(date).stream().map(taskMapper::toTaskDetailsDto).toList();
+    }
 }

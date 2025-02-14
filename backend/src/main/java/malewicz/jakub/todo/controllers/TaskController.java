@@ -28,4 +28,9 @@ public class TaskController {
     public List<LocalDate> getTaskDates(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
         return taskService.getTaskDates(startDate, endDate);
     }
+
+    @GetMapping
+    public List<TaskDetailsDto> getTasks(@RequestParam LocalDate date) {
+        return taskService.getTasksByDate(date);
+    }
 }
