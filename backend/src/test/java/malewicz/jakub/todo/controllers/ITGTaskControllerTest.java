@@ -3,6 +3,8 @@ package malewicz.jakub.todo.controllers;
 import malewicz.jakub.todo.TestcontainersConfiguration;
 import malewicz.jakub.todo.dtos.TaskDetailsDto;
 import malewicz.jakub.todo.dtos.TaskDto;
+import malewicz.jakub.todo.repositories.TaskRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,7 +13,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.annotation.Rollback;
+import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
 
@@ -23,9 +25,10 @@ class ITGTaskControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
+    @Autowired
+    private TaskRepository taskRepository;
 
     @Test
-    @Rollback
     void testCreateTaskShouldReturnCreatedTask() {
         var requestBody = new TaskDto("Clean", "Clean my room.", LocalDate.now());
         var response = restTemplate.exchange("/api/v1/tasks", HttpMethod.POST, new HttpEntity<>(requestBody), TaskDetailsDto.class);
@@ -75,12 +78,29 @@ class ITGTaskControllerTest {
 
     @Test
     void testGetTasksByDateShouldReturnAllTasksInGivenDate() {
+        var tasksAmount = taskRepository.count();
         var response = restTemplate.getForObject(
                 "/api/v1/tasks?date={date}",
                 TaskDetailsDto[].class,
                 LocalDate.now()
         );
         assertThat(response).isNotNull();
-        assertThat(Integer.valueOf(response.length)).isEqualTo(2);
+        assertThat(Integer.valueOf(response.length)).isEqualTo(tasksAmount);
+    }
+
+    @Test
+    void testDeleteTaskShouldReturnNoContent() {
+        var tasks = taskRepository.findAll();
+        var response = restTemplate.exchange(
+                "/api/v1/tasks/" + tasks.getFirst().getId().toString(),
+                HttpMethod.DELETE,
+                null,
+                ResponseEntity.class,
+                LocalDate.now()
+        );
+        assertThat(response).isNotNull();
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+        assertThat(taskRepository.count()).isEqualTo(tasks.size() - 1);
     }
 }
+

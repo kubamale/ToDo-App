@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/tasks")
@@ -32,5 +33,11 @@ public class TaskController {
     @GetMapping
     public List<TaskDetailsDto> getTasks(@RequestParam LocalDate date) {
         return taskService.getTasksByDate(date);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{id}")
+    public void deleteTask(@PathVariable UUID id) {
+        taskService.deleteTask(id);
     }
 }
