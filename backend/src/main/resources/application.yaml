@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: todo
+  datasource:
+    url: jdbc:postgresql://localhost:5432/todo
+    password: ${DATABASE_PASSWORD}
+    username: ${DATABASE_USER}
