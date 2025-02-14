@@ -8,6 +8,9 @@ import malewicz.jakub.todo.services.TaskService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/tasks")
 @RequiredArgsConstructor
@@ -21,4 +24,8 @@ public class TaskController {
         return taskService.createTask(taskDto);
     }
 
+    @GetMapping("/dates")
+    public List<LocalDate> getTaskDates(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
+        return taskService.getTaskDates(startDate, endDate);
+    }
 }

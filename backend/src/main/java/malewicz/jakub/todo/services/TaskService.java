@@ -7,6 +7,9 @@ import malewicz.jakub.todo.mappers.TaskMapper;
 import malewicz.jakub.todo.repositories.TaskRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class TaskService {
@@ -16,5 +19,9 @@ public class TaskService {
     public TaskDetailsDto createTask(final TaskDto taskDto) {
         var task = taskMapper.toTaskEntity(taskDto);
         return taskMapper.toTaskDetailsDto(taskRepository.save(task));
+    }
+
+    public List<LocalDate> getTaskDates(LocalDate startDate, LocalDate endDate) {
+        return taskRepository.findTaskDatesBetween(startDate, endDate);
     }
 }

@@ -61,5 +61,15 @@ class ITGTaskControllerTest {
         assertThat(response.getBody()).isNotNull();
     }
 
-
+    @Test
+    void testGetTaskDatesShouldReturnAllDistinctDates() {
+        var response = restTemplate.getForObject(
+                "/api/v1/tasks/dates?startDate={startDate}&endDate={endDate}",
+                LocalDate[].class,
+                LocalDate.now().minusYears(1),
+                LocalDate.now().plusYears(1)
+        );
+        assertThat(response).isNotNull();
+        assertThat(Integer.valueOf(response.length)).isEqualTo(1);
+    }
 }
