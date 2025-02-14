@@ -34,4 +34,32 @@ class ITGTaskControllerTest {
         assertThat(response.getBody()).isNotNull();
     }
 
+    @Test
+    void testCreateTaskShouldReturnBadRequestErrorWhenPassedInvalidTitle() {
+        var requestBody = new TaskDto("", "Clean my room.", LocalDate.now());
+        var response = restTemplate.exchange("/api/v1/tasks", HttpMethod.POST, new HttpEntity<>(requestBody), TaskDetailsDto.class);
+        assertThat(response).isNotNull();
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(response.getBody()).isNotNull();
+    }
+
+    @Test
+    void testCreateTaskShouldReturnBadRequestErrorWhenPassedInvalidDescription() {
+        var requestBody = new TaskDto("Clean", "", LocalDate.now());
+        var response = restTemplate.exchange("/api/v1/tasks", HttpMethod.POST, new HttpEntity<>(requestBody), TaskDetailsDto.class);
+        assertThat(response).isNotNull();
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(response.getBody()).isNotNull();
+    }
+
+    @Test
+    void testCreateTaskShouldReturnBadRequestErrorWhenPassedInvalidDate() {
+        var requestBody = new TaskDto("Clean", "Clean my room.", null);
+        var response = restTemplate.exchange("/api/v1/tasks", HttpMethod.POST, new HttpEntity<>(requestBody), TaskDetailsDto.class);
+        assertThat(response).isNotNull();
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(response.getBody()).isNotNull();
+    }
+
+
 }
