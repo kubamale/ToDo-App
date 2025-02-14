@@ -2,13 +2,13 @@ package malewicz.jakub.todo.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
+@Setter
+@Getter
 @Builder
 @Entity(name = "tasks")
 @NoArgsConstructor
