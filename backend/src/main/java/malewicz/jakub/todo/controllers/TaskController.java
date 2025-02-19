@@ -40,4 +40,9 @@ public class TaskController {
     public void deleteTask(@PathVariable UUID id) {
         taskService.deleteTask(id);
     }
+
+    @PutMapping("/{id}")
+    public TaskDetailsDto updateTask(@PathVariable UUID id, @Valid @RequestBody TaskDto taskDto) {
+        return taskService.updateTask(id, taskDto);
+    }
 }

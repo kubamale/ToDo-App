@@ -36,4 +36,12 @@ public class TaskService {
             throw new EntityNotFoundException("Task not found with id " + id);
         });
     }
+
+    public TaskDetailsDto updateTask(UUID id, TaskDto taskDto) {
+        var task = taskRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        task.setDate(taskDto.date());
+        task.setTitle(taskDto.title());
+        task.setDescription(taskDto.description());
+        return taskMapper.toTaskDetailsDto(taskRepository.save(task));
+    }
 }

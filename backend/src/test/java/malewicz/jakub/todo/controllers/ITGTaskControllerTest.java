@@ -4,7 +4,6 @@ import malewicz.jakub.todo.TestcontainersConfiguration;
 import malewicz.jakub.todo.dtos.TaskDetailsDto;
 import malewicz.jakub.todo.dtos.TaskDto;
 import malewicz.jakub.todo.repositories.TaskRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -101,6 +100,21 @@ class ITGTaskControllerTest {
         assertThat(response).isNotNull();
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
         assertThat(taskRepository.count()).isEqualTo(tasks.size() - 1);
+    }
+
+    @Test
+    void testUpdateTaskShouldReturnUpdatedTask() {
+        var requestBody = new TaskDto("Updated", "Updated description", LocalDate.now());
+        var task = taskRepository.findAll().getFirst();
+        assert task != null;
+        var response = restTemplate.exchange("/api/v1/tasks/" + task.getId(), HttpMethod.PUT, new HttpEntity<>(requestBody), TaskDetailsDto.class);
+        assertThat(response).isNotNull();
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        var body = response.getBody();
+        assertThat(body).isNotNull();
+        assertThat(body.title()).isEqualTo(requestBody.title());
+        assertThat(body.description()).isEqualTo(requestBody.description());
+        assertThat(body.date()).isEqualTo(requestBody.date());
     }
 }
 
