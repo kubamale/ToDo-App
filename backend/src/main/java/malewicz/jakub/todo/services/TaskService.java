@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import malewicz.jakub.todo.dtos.TaskDetailsDto;
 import malewicz.jakub.todo.dtos.TaskDto;
+import malewicz.jakub.todo.entities.Status;
 import malewicz.jakub.todo.mappers.TaskMapper;
 import malewicz.jakub.todo.repositories.TaskRepository;
 import org.springframework.stereotype.Service;
@@ -43,5 +44,11 @@ public class TaskService {
         task.setTitle(taskDto.title());
         task.setDescription(taskDto.description());
         return taskMapper.toTaskDetailsDto(taskRepository.save(task));
+    }
+
+    public void markAsCompleted(UUID id) {
+        var task = taskRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        task.setStatus(Status.COMPLETED);
+        taskRepository.save(task);
     }
 }

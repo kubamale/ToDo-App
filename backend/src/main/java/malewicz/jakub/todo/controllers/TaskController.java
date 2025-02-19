@@ -45,4 +45,10 @@ public class TaskController {
     public TaskDetailsDto updateTask(@PathVariable UUID id, @Valid @RequestBody TaskDto taskDto) {
         return taskService.updateTask(id, taskDto);
     }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PatchMapping("/{id}")
+    public void markTaskAsCompleted(@PathVariable UUID id) {
+        taskService.markAsCompleted(id);
+    }
 }

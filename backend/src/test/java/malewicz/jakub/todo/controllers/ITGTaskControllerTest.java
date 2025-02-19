@@ -116,5 +116,14 @@ class ITGTaskControllerTest {
         assertThat(body.description()).isEqualTo(requestBody.description());
         assertThat(body.date()).isEqualTo(requestBody.date());
     }
+
+    @Test
+    void testMarkTaskAsCompletedShouldReturnNoContent() {
+        var task = taskRepository.findAll().getFirst();
+        assert task != null;
+        var response = restTemplate.exchange("/api/v1/tasks/" + task.getId(), HttpMethod.PATCH, null, Object.class );
+        assertThat(response).isNotNull();
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+    }
 }
 
