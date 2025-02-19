@@ -8,3 +8,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
+management:
+  endpoints:
+    web:
+      exposure:
+        include: metrics
