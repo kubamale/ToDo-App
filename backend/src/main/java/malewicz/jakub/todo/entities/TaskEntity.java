@@ -25,6 +25,9 @@ public class TaskEntity {
     private String description;
     @Column(nullable = false, columnDefinition = "DATE")
     private LocalDate date;
+    @Builder.Default
+    @Enumerated
+    private Status status = Status.INCOMPLETE;
     @Version
     private int version;
 }

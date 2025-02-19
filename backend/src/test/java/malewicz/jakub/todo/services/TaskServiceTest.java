@@ -3,6 +3,7 @@ package malewicz.jakub.todo.services;
 import jakarta.persistence.EntityNotFoundException;
 import malewicz.jakub.todo.dtos.TaskDetailsDto;
 import malewicz.jakub.todo.dtos.TaskDto;
+import malewicz.jakub.todo.entities.Status;
 import malewicz.jakub.todo.entities.TaskEntity;
 import malewicz.jakub.todo.mappers.TaskMapper;
 import malewicz.jakub.todo.repositories.TaskRepository;
@@ -36,7 +37,7 @@ class TaskServiceTest {
     void testCreateTask_shouldReturnTaskDetails() {
         var taskDto = new TaskDto("Clean", "Clean my room.", LocalDate.now());
         var mappedTaskEntity = TaskEntity.builder().title(taskDto.title()).date(taskDto.date()).description(taskDto.description()).build();
-        var taskDetails = new TaskDetailsDto(UUID.randomUUID(), taskDto.title(), taskDto.description(), taskDto.date());
+        var taskDetails = new TaskDetailsDto(UUID.randomUUID(), taskDto.title(), taskDto.description(), taskDto.date(), Status.INCOMPLETE);
         when(taskMapper.toTaskEntity(taskDto)).thenReturn(mappedTaskEntity);
         when(taskRepository.save(mappedTaskEntity)).thenReturn(mappedTaskEntity);
         when(taskMapper.toTaskDetailsDto(mappedTaskEntity)).thenReturn(taskDetails);
@@ -57,7 +58,7 @@ class TaskServiceTest {
     void getTasksByDate_shouldReturnTasksForSpecifiedDate() {
         var date = LocalDate.now();
         var task = TaskEntity.builder().title("Clean").date(date).id(UUID.randomUUID()).description("Clean my room.").build();
-        var taskDetails = new TaskDetailsDto(task.getId(), task.getTitle(), task.getDescription(), task.getDate());
+        var taskDetails = new TaskDetailsDto(task.getId(), task.getTitle(), task.getDescription(), task.getDate(), Status.INCOMPLETE);
         when(taskRepository.findByDate(date)).thenReturn(List.of(task));
         when(taskMapper.toTaskDetailsDto(task)).thenReturn(taskDetails);
         var tasks = taskService.getTasksByDate(date);
@@ -95,7 +96,7 @@ class TaskServiceTest {
         var taskDto = new TaskDto("Updated", "Updated description.", LocalDate.now());
         var task = TaskEntity.builder().title("Clean").date(LocalDate.now()).id(UUID.randomUUID()).description("Clean my room.").build();
         var updatedTask = TaskEntity.builder().title(taskDto.title()).date(taskDto.date()).id(taskId).description(taskDto.description()).build();
-        var taskDetails = new TaskDetailsDto(updatedTask.getId(), updatedTask.getTitle(), updatedTask.getDescription(), updatedTask.getDate());
+        var taskDetails = new TaskDetailsDto(updatedTask.getId(), updatedTask.getTitle(), updatedTask.getDescription(), updatedTask.getDate(), Status.INCOMPLETE);
         when(taskRepository.findById(taskId)).thenReturn(Optional.of(task));
         when(taskRepository.save(task)).thenReturn(task);
         when(taskMapper.toTaskDetailsDto(task)).thenReturn(taskDetails);

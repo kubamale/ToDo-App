@@ -39,7 +39,7 @@ class ITGTaskControllerTest {
     @Test
     void testCreateTaskShouldReturnBadRequestErrorWhenPassedInvalidTitle() {
         var requestBody = new TaskDto("", "Clean my room.", LocalDate.now());
-        var response = restTemplate.exchange("/api/v1/tasks", HttpMethod.POST, new HttpEntity<>(requestBody), TaskDetailsDto.class);
+        var response = restTemplate.exchange("/api/v1/tasks", HttpMethod.POST, new HttpEntity<>(requestBody), Object.class);
         assertThat(response).isNotNull();
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(response.getBody()).isNotNull();
@@ -48,7 +48,7 @@ class ITGTaskControllerTest {
     @Test
     void testCreateTaskShouldReturnBadRequestErrorWhenPassedInvalidDescription() {
         var requestBody = new TaskDto("Clean", "", LocalDate.now());
-        var response = restTemplate.exchange("/api/v1/tasks", HttpMethod.POST, new HttpEntity<>(requestBody), TaskDetailsDto.class);
+        var response = restTemplate.exchange("/api/v1/tasks", HttpMethod.POST, new HttpEntity<>(requestBody), Object.class);
         assertThat(response).isNotNull();
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(response.getBody()).isNotNull();
@@ -57,7 +57,7 @@ class ITGTaskControllerTest {
     @Test
     void testCreateTaskShouldReturnBadRequestErrorWhenPassedInvalidDate() {
         var requestBody = new TaskDto("Clean", "Clean my room.", null);
-        var response = restTemplate.exchange("/api/v1/tasks", HttpMethod.POST, new HttpEntity<>(requestBody), TaskDetailsDto.class);
+        var response = restTemplate.exchange("/api/v1/tasks", HttpMethod.POST, new HttpEntity<>(requestBody), Object.class);
         assertThat(response).isNotNull();
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(response.getBody()).isNotNull();
