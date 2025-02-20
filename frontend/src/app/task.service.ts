@@ -27,4 +27,8 @@ export class TaskService {
   createTask(task:TaskDto): Observable<Task> {
     return this.http.post<Task>("http://localhost:8080/api/v1/tasks", task)
   }
+
+  updateTask(task:TaskDto, id: String): Observable<Task> {
+    return this.http.put<Task>("http://localhost:8080/api/v1/tasks/" + id, task)
+  }
 }

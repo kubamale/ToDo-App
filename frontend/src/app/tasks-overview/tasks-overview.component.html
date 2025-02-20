@@ -1,26 +1,29 @@
 <div class="main-container">
-  @if(!isCreateWindowVisible){
-  <div class="top-bar">
-    <fa-icon class="arrow" [icon]="faAngleLeft" (click)="previousDay()" ></fa-icon>
-    <p>{{ date.toLocaleString('en', {month: 'long', weekday: 'long', year: 'numeric'}) }}</p>
-    <fa-icon class="arrow" [icon]="faAngleRight" (click)="nextDay()">></fa-icon>
-  </div>
-  <div class="days-container">
-    @for (day of days; track day) {
-      <div class="day {{todayClass(day)}}">
-        <p>{{ day }}</p>
-      </div>
-    }
-  </div>
-  <div class="tasks-container">
-    <div class="new-task-button" (click)="showCreateWindow()">
-      <fa-icon [icon]="faPlus"></fa-icon>
+  @if (!isCreateWindowVisible && !isEditWindowVisible) {
+    <div class="top-bar">
+      <fa-icon class="arrow" [icon]="faAngleLeft" (click)="previousDay()"></fa-icon>
+      <p>{{ date.toLocaleString('en', {month: 'long', weekday: 'long', year: 'numeric'}) }}</p>
+      <fa-icon class="arrow" [icon]="faAngleRight" (click)="nextDay()">></fa-icon>
     </div>
-    @for (task of tasks; track task){
-      <app-task class="task" [task]="task" (onDelete)="delete($event)" (onMarkAsCompleted)="markAsCompleted($event)" ></app-task>
-    }
-  </div>
+    <div class="days-container">
+      @for (day of days; track day) {
+        <div class="day {{todayClass(day)}}">
+          <p>{{ day }}</p>
+        </div>
+      }
+    </div>
+    <div class="tasks-container">
+      <div class="new-task-button" (click)="showCreateWindow()">
+        <fa-icon [icon]="faPlus"></fa-icon>
+      </div>
+      @for (task of tasks; track task) {
+        <app-task class="task" [task]="task" (onDelete)="delete($event)" (onMarkAsCompleted)="markAsCompleted($event)"
+                  (click)="showEditWindow(task)"></app-task>
+      }
+    </div>
+  } @else if (isCreateWindowVisible) {
+    <app-task-form (onCancel)="closeTaskForm()" (onSubmit)="createTask($event)"></app-task-form>
   } @else {
-    <app-task-form (onCancel)="closeTaskWindow()" (onSubmit)="createTask($event)" ></app-task-form>
+    <app-task-form (onCancel)="closeTaskForm()" (onSubmit)="updateTask($event)" [task]="taskToEdit"></app-task-form>
   }
 </div>

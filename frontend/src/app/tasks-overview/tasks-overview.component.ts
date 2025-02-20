@@ -23,6 +23,8 @@ export class TasksOverviewComponent implements OnInit {
   isCreateWindowVisible: boolean = false;
   days: number[] = this.getDays();
   tasks: Task[] = []
+  isEditWindowVisible: boolean = false;
+  taskToEdit!: Task;
 
   constructor(private taskService: TaskService) {
   }
@@ -90,8 +92,14 @@ export class TasksOverviewComponent implements OnInit {
     this.isCreateWindowVisible = true;
   }
 
-  closeTaskWindow(): void {
+  showEditWindow(task: Task): void {
+    this.isEditWindowVisible = true;
+    this.taskToEdit = task;
+  }
+
+  closeTaskForm(): void {
     this.isCreateWindowVisible = false;
+    this.isEditWindowVisible = false;
   }
 
   createTask(task: TaskDto): void {
@@ -99,9 +107,20 @@ export class TasksOverviewComponent implements OnInit {
       if (this.formatDate(task.date) == this.formatDate(this.date)) {
         this.tasks.push(task);
       }
-    })
+    });
 
-    this.closeTaskWindow();
+    this.closeTaskForm();
+  }
+
+  updateTask(task: TaskDto): void {
+    this.taskService.updateTask(task, this.taskToEdit.id).subscribe(updatedTask => {
+      this.tasks = this.tasks.filter(task => task.id != updatedTask.id);
+      if (this.formatDate(updatedTask.date) == this.formatDate(this.date)) {
+        this.tasks.push(updatedTask);
+      }
+    });
+
+    this.closeTaskForm();
   }
 
   formatDate(date: Date | string): string {
