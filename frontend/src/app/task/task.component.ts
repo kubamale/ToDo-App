@@ -21,7 +21,6 @@ export class TaskComponent {
   protected readonly faTrash = faTrash;
 
   delete() {
-    console.log("delete");
     this.onDelete.emit(this.task.id);
   }
 

@@ -36,7 +36,6 @@ export class TasksOverviewComponent implements OnInit {
   }
 
   nextDay() {
-    console.log("next day")
     let millis = this.date.getTime();
     this.date = new Date(millis + this.oneDayMillis);
     this.days = this.getDays()
@@ -67,10 +66,8 @@ export class TasksOverviewComponent implements OnInit {
   }
 
   loadTasks(): void {
-    console.log("loading tasks: " + this.date);
     this.taskService.getTasks(this.date).subscribe(tasks => {
       this.tasks = tasks;
-      console.log(tasks);
     });
   }
 
@@ -98,8 +95,6 @@ export class TasksOverviewComponent implements OnInit {
   }
 
   createTask(task: TaskDto): void {
-    console.log(this.formatDate(task.date));
-    console.log(this.formatDate(this.date));
     this.taskService.createTask(task).subscribe(task => {
       if (this.formatDate(task.date) == this.formatDate(this.date)) {
         this.tasks.push(task);
