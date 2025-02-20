@@ -1,0 +1,40 @@
+.main-container{
+  border-radius: 10px;
+  border: 3px solid lightgray;
+}
+
+.top-bar{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+}
+
+.days-container{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 100px;
+}
+
+.arrow:hover{
+  cursor: pointer;
+}
+
+.tasks-container{
+  padding: 20px 10px;
+}
+
+.day{
+  width: 50px;
+  aspect-ratio: 1 / 1; /* Maintains a perfect square */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid blueviolet;
+  border-radius: 30px;
+}
+
+.day.today{
+  background-color: rgba(138, 43, 226, 0.44);
+}

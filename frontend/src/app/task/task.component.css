@@ -1,0 +1,32 @@
+.task-container {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  align-content: center;
+  justify-content: space-between;
+  border: lightgray solid 1px;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: #82f6b7;
+  margin-bottom: 10px;
+}
+
+.task-container.COMPLETED {
+  opacity: 50%;
+}
+
+
+.actions{
+  display: flex;
+  align-items: center;
+}
+
+fa-icon{
+  padding: 10px;
+}
+
+fa-icon:hover{
+  cursor: pointer;
+}
+
+
