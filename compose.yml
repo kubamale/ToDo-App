@@ -19,3 +19,8 @@ services:
       - .env
     depends_on:
       - database
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    ports:
+      - "80:4200"
