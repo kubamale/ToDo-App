@@ -38,3 +38,18 @@
 .day.today{
   background-color: rgba(138, 43, 226, 0.44);
 }
+
+.new-task-button{
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  border: lightgray solid 1px;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0 10px 0;
+}
+
+.new-task-button:hover{
+  cursor: pointer;
+}

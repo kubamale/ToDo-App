@@ -1,4 +1,5 @@
 <div class="main-container">
+  @if(!isCreateWindowVisible){
   <div class="top-bar">
     <fa-icon class="arrow" [icon]="faAngleLeft" (click)="previousDay()" ></fa-icon>
     <p>{{ date.toLocaleString('en', {month: 'long', weekday: 'long', year: 'numeric'}) }}</p>
@@ -12,8 +13,14 @@
     }
   </div>
   <div class="tasks-container">
+    <div class="new-task-button" (click)="showCreateWindow()">
+      <fa-icon [icon]="faPlus"></fa-icon>
+    </div>
     @for (task of tasks; track task){
       <app-task class="task" [task]="task" (onDelete)="delete($event)" (onMarkAsCompleted)="markAsCompleted($event)" ></app-task>
     }
   </div>
+  } @else {
+    <app-task-form (onCancel)="closeTaskWindow()" (onSubmit)="createTask($event)" ></app-task-form>
+  }
 </div>

@@ -13,6 +13,6 @@
   </div>
   <div class="buttons-container">
     <button (click)="cancel()" class="cancel-button">Cancel</button>
-    <button type="submit" [disabled]="!taskForm.valid" (submit)="save()" class="submit-button">Save</button>
+    <button type="submit" [disabled]="!taskForm.valid" (click)="save()" class="submit-button">Save</button>
   </div>
 </form>

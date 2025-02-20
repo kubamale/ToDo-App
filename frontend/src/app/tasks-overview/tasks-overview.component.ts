@@ -1,16 +1,18 @@
 import {Component, OnInit} from '@angular/core';
 import {TaskComponent} from "../task/task.component";
-import {Task, TaskStatus} from "../../models/Tasks";
-import {faAngleLeft, faAngleRight, faCoffee} from "@fortawesome/free-solid-svg-icons";
+import {Task, TaskDto, TaskStatus} from "../../models/Tasks";
+import {faAngleLeft, faAngleRight, faCoffee, faPlus} from "@fortawesome/free-solid-svg-icons";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {TaskService} from "../task.service";
+import {TaskFormComponent} from "../task-form/task-form.component";
 
 @Component({
   selector: 'app-tasks-overview',
   standalone: true,
   imports: [
     TaskComponent,
-    FaIconComponent
+    FaIconComponent,
+    TaskFormComponent
   ],
   templateUrl: './tasks-overview.component.html',
   styleUrl: './tasks-overview.component.css'
@@ -18,6 +20,7 @@ import {TaskService} from "../task.service";
 export class TasksOverviewComponent implements OnInit {
   date = new Date();
   oneDayMillis = 24 * 60 * 60 * 1000;
+  isCreateWindowVisible: boolean = false;
   days: number[] = this.getDays();
   tasks: Task[] = []
 
@@ -85,4 +88,31 @@ export class TasksOverviewComponent implements OnInit {
       }
     });
   }
+
+  showCreateWindow(): void {
+    this.isCreateWindowVisible = true;
+  }
+
+  closeTaskWindow(): void {
+    this.isCreateWindowVisible = false;
+  }
+
+  createTask(task: TaskDto): void {
+    console.log(this.formatDate(task.date));
+    console.log(this.formatDate(this.date));
+    this.taskService.createTask(task).subscribe(task => {
+      if (this.formatDate(task.date) == this.formatDate(this.date)) {
+        this.tasks.push(task);
+      }
+    })
+
+    this.closeTaskWindow();
+  }
+
+  formatDate(date: Date | string): string {
+    const d = new Date(date);
+    return d.toISOString().split('T')[0];
+  }
+
+  protected readonly faPlus = faPlus;
 }
