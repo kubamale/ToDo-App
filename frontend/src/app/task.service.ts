@@ -25,7 +25,7 @@ export class TaskService {
   }
 
   createTask(task:TaskDto): Observable<Task> {
-    return this.http.post<Task>(`${environment.apiUrl}/api/v1/tasks/`, task)
+    return this.http.post<Task>(`${environment.apiUrl}/api/v1/tasks`, task)
   }
 
   updateTask(task:TaskDto, id: String): Observable<Task> {
