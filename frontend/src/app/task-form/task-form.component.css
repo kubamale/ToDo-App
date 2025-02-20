@@ -1,0 +1,51 @@
+.task-form {
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.task-field{
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px;
+}
+
+.text-input{
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 100%;
+}
+
+
+.buttons-container{
+  display: flex;
+  width: 100%;
+  align-content: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+button{
+  width: 12rem;
+  border-radius: 7px;
+  height: 1.5rem;
+}
+
+
+button:hover:enabled{
+  cursor: pointer;
+  opacity: 0.85;
+}
+
+
+
+.submit-button{
+  background-color: #31d631;
+}
+
+.cancel-button{
+  background-color: #e45043;
+}
