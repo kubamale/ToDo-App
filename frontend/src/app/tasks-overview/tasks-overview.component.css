@@ -54,8 +54,3 @@
   cursor: pointer;
 }
 
-
-.task:hover{
-  cursor: pointer;
-  opacity: 0.85;
-}

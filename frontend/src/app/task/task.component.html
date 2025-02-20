@@ -1,9 +1,10 @@
 <div class="task-container {{TaskStatus[task.status]}}">
   <p>{{task.title}}</p>
-  <p>{{task.description}}</p>
+  <p class="description">{{task.description}}</p>
   <div class="actions">
     @if (task.status.valueOf() == TaskStatus.INCOMPLETE){
       <fa-icon [icon]="faCheck" style="color: forestgreen" (click)="complete()"></fa-icon>
+      <fa-icon [icon]="faPencilAlt" (click)="onEdit.emit(task)"></fa-icon>
     }
     <fa-icon [icon]="faTrash" style="color: red" (click)="delete()"></fa-icon>
   </div>

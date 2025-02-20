@@ -17,8 +17,8 @@
         <fa-icon [icon]="faPlus"></fa-icon>
       </div>
       @for (task of tasks; track task) {
-        <app-task class="task" [task]="task" (onDelete)="delete($event)" (onMarkAsCompleted)="markAsCompleted($event)"
-                  (click)="showEditWindow(task)"></app-task>
+        <app-task class="task" [task]="task" (onDelete)="delete($event)"
+                  (onMarkAsCompleted)="markAsCompleted($event)" (onEdit)="showEditWindow($event)" ></app-task>
       }
     </div>
   } @else if (isCreateWindowVisible) {

@@ -17,18 +17,18 @@ export class TaskService {
   }
 
   deleteTask(id: string): Observable<void> {
-    return this.http.delete<void>(`${environment.apiUrl}/api/v1/tasks` + id);
+    return this.http.delete<void>(`${environment.apiUrl}/api/v1/tasks/` + id);
   }
 
   markTaskAsCompleted(id: string): Observable<void> {
-    return this.http.patch<void>(`${environment.apiUrl}/api/v1/tasks` + id, {})
+    return this.http.patch<void>(`${environment.apiUrl}/api/v1/tasks/` + id, {})
   }
 
   createTask(task:TaskDto): Observable<Task> {
-    return this.http.post<Task>(`${environment.apiUrl}/api/v1/tasks`, task)
+    return this.http.post<Task>(`${environment.apiUrl}/api/v1/tasks/`, task)
   }
 
   updateTask(task:TaskDto, id: String): Observable<Task> {
-    return this.http.put<Task>(`${environment.apiUrl}/api/v1/tasks` + id, task)
+    return this.http.put<Task>(`${environment.apiUrl}/api/v1/tasks/` + id, task)
   }
 }

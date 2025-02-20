@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Task, TaskStatus} from "../../models/Tasks";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
-import {faCheck, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faCheck, faPencilAlt, faTrash} from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: 'app-task',
@@ -17,6 +17,7 @@ export class TaskComponent {
   @Input() task!: Task
   @Output() onDelete = new EventEmitter<string>();
   @Output() onMarkAsCompleted = new EventEmitter<string>();
+  @Output() onEdit = new EventEmitter<Task>();
   protected readonly faCheck = faCheck;
   protected readonly faTrash = faTrash;
 
@@ -29,5 +30,7 @@ export class TaskComponent {
     this.task.status = TaskStatus.COMPLETED;
   }
 
+
   protected readonly TaskStatus = TaskStatus;
+  protected readonly faPencilAlt = faPencilAlt;
 }
