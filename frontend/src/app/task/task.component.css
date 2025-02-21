@@ -7,8 +7,9 @@
   border: lightgray solid 1px;
   border-radius: 10px;
   padding: 10px;
-  background-color: #82f6b7;
-  margin: 10px 0 10px 0;
+  background-color: rgba(200, 200, 200, 0.58);
+  margin: 20px 0 20px 0;
+  box-shadow: 0px 5px 5px #919191;
 }
 
 .task-container.COMPLETED {

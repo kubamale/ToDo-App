@@ -69,7 +69,7 @@ export class TasksOverviewComponent implements OnInit {
 
   loadTasks(): void {
     this.taskService.getTasks(this.date).subscribe(tasks => {
-      this.tasks = tasks;
+      this.tasks = tasks.sort((a, b) => -a.status.localeCompare(b.status));
     });
   }
 
@@ -85,6 +85,7 @@ export class TasksOverviewComponent implements OnInit {
       if (task) {
         task.status = TaskStatus.COMPLETED;
       }
+      this.tasks.sort((a, b) => -a.status.localeCompare(b.status));
     });
   }
 
@@ -106,6 +107,7 @@ export class TasksOverviewComponent implements OnInit {
     this.taskService.createTask(task).subscribe(task => {
       if (this.formatDate(task.date) == this.formatDate(this.date)) {
         this.tasks.push(task);
+        this.tasks.sort((a, b) => -a.status.localeCompare(b.status))
       }
     });
 

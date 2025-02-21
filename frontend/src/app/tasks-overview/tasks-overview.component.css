@@ -1,6 +1,8 @@
 .main-container{
   border-radius: 10px;
   border: 3px solid lightgray;
+  max-height: 95vh;
+  overflow: scroll;
 }
 
 .top-bar{
@@ -31,7 +33,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid blueviolet;
+  border: 1px solid #bfbfbf;
   border-radius: 30px;
 }
 
@@ -52,5 +54,6 @@
 
 .new-task-button:hover{
   cursor: pointer;
+  background-color: #dfdfdf;
 }
 
