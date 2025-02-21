@@ -2,6 +2,7 @@ package malewicz.jakub.todo.controllers;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import malewicz.jakub.todo.dtos.FilterDto;
 import malewicz.jakub.todo.dtos.TaskDetailsDto;
 import malewicz.jakub.todo.dtos.TaskDto;
 import malewicz.jakub.todo.services.TaskService;
@@ -51,5 +52,10 @@ public class TaskController {
     @PatchMapping("/{id}")
     public void markTaskAsCompleted(@PathVariable UUID id) {
         taskService.markAsCompleted(id);
+    }
+
+    @PostMapping("/filter")
+    public List<TaskDetailsDto> filterTasks(@RequestBody List<FilterDto> filters) {
+        return taskService.filterTasks(filters);
     }
 }

@@ -1,6 +1,7 @@
 package malewicz.jakub.todo.services;
 
 import jakarta.persistence.EntityNotFoundException;
+import malewicz.jakub.todo.dtos.FilterDto;
 import malewicz.jakub.todo.dtos.TaskDetailsDto;
 import malewicz.jakub.todo.dtos.TaskDto;
 import malewicz.jakub.todo.entities.Status;
@@ -30,6 +31,8 @@ class TaskServiceTest {
     private TaskMapper taskMapper;
     @Mock
     private TaskRepository taskRepository;
+    @Mock
+    private FilterService<TaskEntity> filterService;
     @InjectMocks
     private TaskService taskService;
 
@@ -104,5 +107,18 @@ class TaskServiceTest {
         assertThat(result.title()).isEqualTo(taskDto.title());
         assertThat(result.description()).isEqualTo(taskDto.description());
         assertThat(result.date()).isEqualTo(taskDto.date());
+    }
+
+    @Test
+    void filterTasks_shouldReturnFilteredTasks() {
+        var filters = List.of(new FilterDto("date", LocalDate.now()));
+        var spec = TaskRepository.Specs.byDate(LocalDate.now());
+        var task = TaskEntity.builder().title("Clean").date(LocalDate.now()).id(UUID.randomUUID()).description("Clean my room.").build();
+        var taskDetails = new TaskDetailsDto(task.getId(), task.getTitle(), task.getDescription(), task.getDate(), Status.INCOMPLETE);
+        when(filterService.getSpecification(filters)).thenReturn(spec);
+        when(taskRepository.findAll(spec)).thenReturn(List.of(task));
+        when(taskMapper.toTaskDetailsDto(task)).thenReturn(taskDetails);
+        var result = taskService.filterTasks(filters);
+        assertThat(result.size()).isEqualTo(1);
     }
 }

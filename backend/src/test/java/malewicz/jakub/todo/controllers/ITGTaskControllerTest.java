@@ -1,9 +1,12 @@
 package malewicz.jakub.todo.controllers;
 
 import malewicz.jakub.todo.TestcontainersConfiguration;
+import malewicz.jakub.todo.dtos.FilterDto;
 import malewicz.jakub.todo.dtos.TaskDetailsDto;
 import malewicz.jakub.todo.dtos.TaskDto;
+import malewicz.jakub.todo.entities.TaskEntity;
 import malewicz.jakub.todo.repositories.TaskRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Objects;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -27,6 +32,24 @@ class ITGTaskControllerTest {
     @Autowired
     private TaskRepository taskRepository;
 
+    @BeforeEach
+    void setUp() {
+        taskRepository.deleteAll();
+        var tasks = List.of(
+                TaskEntity.builder()
+                        .title("Clean")
+                        .description("Clean my room.")
+                        .date(LocalDate.now())
+                        .build(),
+                TaskEntity.builder()
+                        .title("Exercise")
+                        .description("Do stretching exercises.")
+                        .date(LocalDate.now())
+                        .build()
+        );
+        taskRepository.saveAll(tasks);
+    }
+
     @Test
     void testCreateTaskShouldReturnCreatedTask() {
         var requestBody = new TaskDto("Clean", "Clean my room.", LocalDate.now());
@@ -34,6 +57,7 @@ class ITGTaskControllerTest {
         assertThat(response).isNotNull();
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(response.getBody()).isNotNull();
+
     }
 
     @Test
@@ -121,9 +145,34 @@ class ITGTaskControllerTest {
     void testMarkTaskAsCompletedShouldReturnNoContent() {
         var task = taskRepository.findAll().getFirst();
         assert task != null;
-        var response = restTemplate.exchange("/api/v1/tasks/" + task.getId(), HttpMethod.PATCH, null, Object.class );
+        var response = restTemplate.exchange("/api/v1/tasks/" + task.getId(), HttpMethod.PATCH, null, Object.class);
         assertThat(response).isNotNull();
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+    }
+
+    @Test
+    void testFilterTasksShouldReturnFilteredTasks() {
+        var filters = List.of(new FilterDto("title", "Clean"), new FilterDto("date", LocalDate.now()));
+        var response = restTemplate.exchange("/api/v1/tasks/filter", HttpMethod.POST, new HttpEntity<>(filters), TaskDetailsDto[].class);
+        assertThat(response).isNotNull();
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(Objects.requireNonNull(response.getBody()).length).isEqualTo(1);
+    }
+
+    @Test
+    void testFilterTasksShouldReturnBadRequestWhenPassedInvalidFieldName() {
+        var filters = List.of(new FilterDto("title", "Clean"), new FilterDto("not existing field name", LocalDate.now()));
+        var response = restTemplate.exchange("/api/v1/tasks/filter", HttpMethod.POST, new HttpEntity<>(filters), Object.class);
+        assertThat(response).isNotNull();
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    void testFilterTasksShouldReturnBadRequestWhenPassedInvalidValue() {
+        var filters = List.of(new FilterDto("title", "Clean"), new FilterDto("date" , "this is not valid date value"));
+        var response = restTemplate.exchange("/api/v1/tasks/filter", HttpMethod.POST, new HttpEntity<>(filters), Object.class);
+        assertThat(response).isNotNull();
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 }
 

@@ -2,9 +2,11 @@ package malewicz.jakub.todo.services;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import malewicz.jakub.todo.dtos.FilterDto;
 import malewicz.jakub.todo.dtos.TaskDetailsDto;
 import malewicz.jakub.todo.dtos.TaskDto;
 import malewicz.jakub.todo.entities.Status;
+import malewicz.jakub.todo.entities.TaskEntity;
 import malewicz.jakub.todo.mappers.TaskMapper;
 import malewicz.jakub.todo.repositories.TaskRepository;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import java.util.UUID;
 public class TaskService {
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
+    private final FilterService<TaskEntity> taskFilterService;
 
     public TaskDetailsDto createTask(final TaskDto taskDto) {
         var task = taskMapper.toTaskEntity(taskDto);
@@ -50,5 +53,9 @@ public class TaskService {
         var task = taskRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         task.setStatus(Status.COMPLETED);
         taskRepository.save(task);
+    }
+
+    public List<TaskDetailsDto> filterTasks(List<FilterDto> filters) {
+        return taskRepository.findAll(taskFilterService.getSpecification(filters)).stream().map(taskMapper::toTaskDetailsDto).toList();
     }
 }
