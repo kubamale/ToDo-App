@@ -6,6 +6,7 @@ Simple application that allows tracking of tasks that should be completed and th
 * Spring Boot
 * Spring Data Jpa
 * Test Containers
+* Hibernate jpamodelgen
 * Lombok
 * Mapstruct
 * PostgresSql
