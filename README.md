@@ -23,6 +23,7 @@ DATABASE_USER=<databse_user>
 ```shell
 docker compose up
 ```
+Backend runs on port 8080 and database is available on port 5432.
 ### Frontend
 #### Requirements
 - Angular 17
@@ -30,6 +31,7 @@ docker compose up
 cd frontend/
 ng serve
 ```
+Application is available on http://localhost:4200. 
 
 ## Functionalities
 - Crud operations on tasks
